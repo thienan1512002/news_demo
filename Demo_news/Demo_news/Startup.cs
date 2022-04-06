@@ -1,6 +1,8 @@
+using Demo_news.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +32,9 @@ namespace Demo_news
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo_news", Version = "v1" });
+            });
+            services.AddDbContext<NewsDBContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("newscon"));
             });
         }
 
