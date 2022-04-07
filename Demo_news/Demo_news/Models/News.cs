@@ -15,5 +15,7 @@ namespace Demo_news.Models
         public string ContentType { get; set; }
         public string ContentUser { get; set; }
         public string Content { get; set; }
+        public Boolean Approved { get; set; }
+        public string NewsUser { get; set; }
     }
 }

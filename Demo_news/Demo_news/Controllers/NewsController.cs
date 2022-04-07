@@ -34,7 +34,9 @@ namespace Demo_news.Controllers
                            Sequences = c.Sequence,
                            ContentType = c.ContentType,
                            ContentUser = c.ContentUser,
-                           Content = c.Content
+                           Content = c.Content,
+                           Approved = h.Approved,
+                           NewsUser = h.NewsUser
                        };
             return await data.ToListAsync();
         }

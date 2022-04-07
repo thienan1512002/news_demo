@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -13,6 +15,10 @@ namespace Demo_news.Models
         public string Content { get; set; }
         public string ContentType { get; set; }
         public string ContentUser { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
+        [NotMapped]
+        public string ImageSrc { get; set; }
         public DateTime? ContentDate { get; set; }
 
         public virtual NewsHeader News { get; set; }

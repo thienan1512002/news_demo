@@ -134,4 +134,4 @@ C:\Users\nhta1\OneDrive\Documents\GitHub\news_demo\Demo_news\Demo_news\bin\Debug
 C:\Users\nhta1\OneDrive\Documents\GitHub\news_demo\Demo_news\Demo_news\bin\Debug\net5.0\Firebase.Auth.dll
 C:\Users\nhta1\OneDrive\Documents\GitHub\news_demo\Demo_news\Demo_news\bin\Debug\net5.0\Firebase.Storage.dll
 C:\Users\nhta1\OneDrive\Documents\GitHub\news_demo\Demo_news\Demo_news\bin\Debug\net5.0\System.ServiceModel.dll
-C:\Users\nhta1\OneDrive\Documents\GitHub\news_demo\Demo_news\Demo_news\obj\Debug\net5.0\refint\Demo_news.dll
+C:\Users\nhta1\OneDrive\Documents\GitHub\news_demo\Demo_news\Demo_news\bin\Debug\net5.0\ref\Demo_news.dll

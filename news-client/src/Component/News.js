@@ -1,13 +1,13 @@
 import { React, useState, useEffect } from "react";
 import { loadData, createData } from "../services/Data";
-function NewsHeaders() {
+function News() {
   const [newsHeader, setNewHeaders] = useState(null);
 
   useEffect(() => {
-    loadData("newsheaders").then((data) => {
+    loadData("news").then((data) => {
       setNewHeaders(data.data);
     });
-    loadData("newsheaders");
+    loadData("news");
   });
 
   
@@ -62,13 +62,15 @@ function NewsHeaders() {
           </thead>
           <tbody>
             {newsHeader &&
-              newsHeader.map((newsHeader) => {
+              newsHeader.filter((item) => item.approved===false).map((newsHeader) => {
+                
                 return (
                   <tr key={newsHeader.id}>
                     <td>{newsHeader.newsTitle}</td>
                     <td>{newsHeader.newsUser}</td>
                     <td>{newsHeader.newsDesc}</td>
                     <td>{newsHeader.newsDate}</td>
+                    <td><button className="btn btn-primary">Approval</button></td>
                   </tr>
                 );
               })}
@@ -79,4 +81,4 @@ function NewsHeaders() {
   );
 }
 
-export default NewsHeaders;
+export default News;

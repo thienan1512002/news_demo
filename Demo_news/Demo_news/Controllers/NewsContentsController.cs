@@ -16,34 +16,22 @@ namespace Demo_news.Controllers
     public class NewsContentsController : ControllerBase
     {
         private readonly NewsDBContext _context;
-        private IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public NewsContentsController(NewsDBContext context, IHostingEnvironment environment)
+        public NewsContentsController(NewsDBContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
-            _environment = environment;
+            _hostEnvironment = hostEnvironment;
         }
 
         // GET: api/NewsContents
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<NewsContent>>> GetNewsContents()
-        {
-            return await _context.NewsContents.ToListAsync();
-        }
-
-        // GET: api/NewsContents/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<NewsContent>> GetNewsContent(int id)
+        public async Task<ActionResult<IEnumerable<NewsContent>>> GetNewsContents(int id)
         {
-            var newsContent = await _context.NewsContents.FindAsync(id);
-
-            if (newsContent == null)
-            {
-                return NotFound();
-            }
-
-            return newsContent;
+            return await _context.NewsContents.Where(m => m.NewsId == id).ToListAsync();
         }
+
+
 
         // PUT: api/NewsContents/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -62,7 +50,7 @@ namespace Demo_news.Controllers
                 {
                     FileInfo fi = new FileInfo(file.FileName);
                     var newfilename = "Image_" + DateTime.Now.TimeOfDay.Milliseconds + fi.Extension;
-                    var path = Path.Combine("", _environment.ContentRootPath + "/Images/" + newfilename);
+                    var path = Path.Combine("",   "/Images/" + newfilename);
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         file.CopyTo(stream);
@@ -100,35 +88,27 @@ namespace Demo_news.Controllers
         // POST: api/NewsContents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<NewsContent>> PostNewsContent()
+        public async Task<ActionResult<NewsContent>> PostNewsContent([FromForm] NewsContent newsContent)
         {
-            NewsContent newsContent = new NewsContent();
-            var files = HttpContext.Request.Form.Files;
-            if (files != null && files.Count > 0)
-            {
-                foreach (var file in files)
-                {
-                    FileInfo fi = new FileInfo(file.FileName);
-                    var newfilename = "Image_" + DateTime.Now.TimeOfDay.Milliseconds + fi.Extension;
-                    var path = Path.Combine("", _environment.ContentRootPath + "/Images/" + newfilename);
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                    newsContent.Content = "Images/" + newfilename;
-                    newsContent.NewsId = 1;
-                    newsContent.ContentDate = DateTime.Now;
-                    newsContent.ContentType = "img";
-                    newsContent.Sequence = 1;
-                    _context.NewsContents.Add(newsContent);
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-
-            return CreatedAtAction("GetNewsContent", new { id = newsContent.ContentId }, newsContent);
+            newsContent.Content = await SaveImage(newsContent.ImageFile);
+            newsContent.ContentDate = DateTime.Now;
+            _context.NewsContents.Add(newsContent);
+            await _context.SaveChangesAsync();
+            return Ok(newsContent);
         }
 
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return imageName;
+        }
         // DELETE: api/NewsContents/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNewsContent(int id)
