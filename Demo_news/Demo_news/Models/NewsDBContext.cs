@@ -75,9 +75,12 @@ namespace Demo_news.Models
 
                 entity.Property(e => e.NewsDate).HasColumnType("datetime");
 
-                entity.Property(e => e.NewsDesc).HasMaxLength(100);
+                entity.Property(e => e.NewsDesc).HasMaxLength(100); 
+                entity.Property(e => e.NewsUser).HasMaxLength(100);
 
                 entity.Property(e => e.NewsTitle).HasMaxLength(100);
+
+                entity.Property(e => e.Approved).HasColumnType("bit").HasColumnName("Approved");
             });
 
             OnModelCreatingPartial(modelBuilder);

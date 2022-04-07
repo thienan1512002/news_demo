@@ -16,6 +16,9 @@ namespace Demo_news.Models
         public string NewsTitle { get; set; }
         public string NewsDesc { get; set; }
         public DateTime? NewsDate { get; set; }
+        public string NewsUser { get; set; }
+
+        public Boolean Approved { get; set; }
 
         public virtual ICollection<NewsContent> NewsContents { get; set; }
     }

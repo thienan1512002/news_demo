@@ -78,6 +78,7 @@ namespace Demo_news.Controllers
         public async Task<ActionResult<NewsHeader>> PostNewsHeader(NewsHeader newsHeader)
         {
             newsHeader.NewsDate = DateTime.Now;
+            newsHeader.Approved = false;
             _context.NewsHeaders.Add(newsHeader);
             await _context.SaveChangesAsync();
 
