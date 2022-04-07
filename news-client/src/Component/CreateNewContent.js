@@ -4,18 +4,20 @@ import { createData } from "../services/Data";
 function CreateNewContent(props) {
 
     const [textSequence,setTextSequence] = useState(null);
-  const handleTextContent = (e) => {
+    const [imageSequence,setImageSequence] = useState(null);
+  const handleTextContent = (e) => {           
       e.preventDefault();
       createData("texts", {
         content: e.target.textContent.value,
         newsId: 1,
         contentType: "text",
         contentUser: "An",
-        sequence: textSequence
-      }).then((result) =>console.log(result));
+        sequence: e.target.sequence.value,      
+      }).then((result) => console.log(result));
   }
 
   const handleImageContent = (e) => {
+    const today = new Date();
       e.preventDefault();
       const file = e.target[0].files[0];
       let formData = new FormData();
@@ -23,8 +25,9 @@ function CreateNewContent(props) {
       formData.append("content", e.target[0].files[0].name);
       formData.append("newsId", 1);
       formData.append("contentType", "img");
+      formData.append("contentDate", today.getYear() + "-" + today.getMonth() + "-" + today.getDate());
       formData.append("contentUser", "An");
-      formData.append("sequence", 2);
+      formData.append("sequence", e.target.imgSequence.value);
       createData("newscontents", 
         formData,
       ).then(res=>console.log(res));
@@ -32,6 +35,9 @@ function CreateNewContent(props) {
   const handleTextSequence = (e) =>{
       setTextSequence(e.target.value);
   }
+  const handleImageSequence = (e) => {
+    setImageSequence(e.target.value);
+  };
   return (
     <div>
       <h3 align="center">Create News</h3>
@@ -52,15 +58,7 @@ function CreateNewContent(props) {
             <div className="row">
               <div className="form-group">
                 <label>Sequence</label>
-                <select
-                  class="form-control"
-                  name="textSequence"
-                  onChange={handleTextSequence}
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
+                <input type="number" className="form-control" name="sequence" />
               </div>
             </div>
             <div className="row">
@@ -84,11 +82,7 @@ function CreateNewContent(props) {
             <div className="row">
               <div className="form-group">
                 <label>Sequence</label>
-                <select class="form-control">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
+                <input type="number" className="form-control" name="imgSequence" />
               </div>
             </div>
             <div className="row">

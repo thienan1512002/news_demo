@@ -36,36 +36,21 @@ namespace Demo_news.Controllers
         // PUT: api/NewsContents/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNewsContent(int id)
+        public async Task<IActionResult> PutNewsContent(int id, [FromForm] NewsContent newsContent)
         {
-            NewsContent newsContent = await _context.NewsContents.FirstOrDefaultAsync(m => m.ContentId == id);
+
             if (id != newsContent.ContentId)
             {
                 return BadRequest();
             }
-            var files = HttpContext.Request.Form.Files;
-            if (files != null && files.Count > 0)
-            {
-                foreach (var file in files)
-                {
-                    FileInfo fi = new FileInfo(file.FileName);
-                    var newfilename = "Image_" + DateTime.Now.TimeOfDay.Milliseconds + fi.Extension;
-                    var path = Path.Combine("",   "/Images/" + newfilename);
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                    newsContent.Content = "Images/" + newfilename;
-                    newsContent.NewsId = 1;
-                    newsContent.ContentDate = DateTime.Now;
-                    newsContent.ContentType = "img";
-                    newsContent.Sequence = 1;
-                    _context.NewsContents.Add(newsContent);
-                    await _context.SaveChangesAsync();
-                    _context.Entry(newsContent).State = EntityState.Modified;
-                }
-            }
-
+            newsContent.Content = await SaveImage(newsContent.ImageFile);
+            newsContent.NewsId = 1;
+            newsContent.ContentDate = DateTime.Now;
+            newsContent.ContentType = "img";
+            newsContent.Sequence = 1;
+            _context.NewsContents.Add(newsContent);
+            await _context.SaveChangesAsync();
+            _context.Entry(newsContent).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();

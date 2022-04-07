@@ -77,9 +77,9 @@ namespace Demo_news.Controllers
         [HttpPost]
         public async Task<ActionResult<NewsContent>> PostNewsContent(NewsContent newsContent)
         {
+            newsContent.ContentDate = DateTime.Now;
             _context.NewsContents.Add(newsContent);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetNewsContent", new { id = newsContent.ContentId }, newsContent);
         }
 
