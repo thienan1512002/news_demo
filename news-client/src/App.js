@@ -6,7 +6,7 @@ import CreateNewContent from './Component/CreateNewContent';
 function App() {
   return (
     <div className="container">
-      <CreateNewContent />
+      <News />
     </div>
   );
 }

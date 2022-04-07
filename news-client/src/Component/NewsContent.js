@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import { loadData } from "../services/Data";
 
 
-function Content(){
+function Content(props){
     const [contents , setContents] = useState(null);
 
     useEffect(() =>{
@@ -13,12 +13,12 @@ function Content(){
 
     return (
         <div className="container">
-            {contents&&contents.map(content =>{
+            {contents&&contents.sort((a,b)=>a.sequence-b.sequence).map(content =>{
                 if(content.contentType ==="img"){
                     return (
                       <img
                         src={"http://localhost:13715/" + content.content}
-                        alt=""
+                        alt={content.sequence}
                         width="175"
                         height="300"
                       />

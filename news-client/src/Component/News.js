@@ -4,7 +4,7 @@ function News() {
   const [newsHeader, setNewHeaders] = useState(null);
 
   useEffect(() => {
-    loadData("news").then((data) => {
+    loadData("newsheaders").then((data) => {
       setNewHeaders(data.data);
     });
     loadData("news");
@@ -51,6 +51,7 @@ function News() {
         </form>
       </div>
       <div className="col-6">
+        <h4>News not Approval</h4>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -58,6 +59,10 @@ function News() {
               <th>News User</th>
               <th>News Desc</th>
               <th>News Date</th>
+              <th>Action</th>
+              <th>Edit</th>
+              <th>Delete</th>
+              <th>Content</th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +75,18 @@ function News() {
                     <td>{newsHeader.newsUser}</td>
                     <td>{newsHeader.newsDesc}</td>
                     <td>{newsHeader.newsDate}</td>
-                    <td><button className="btn btn-primary">Approval</button></td>
+                    <td>
+                      <button className="btn btn-primary">Add</button>
+                    </td>
+                    <td>
+                      <button className="btn btn-primary">Add</button>
+                    </td> 
+                    <td>
+                      <button className="btn btn-primary">Add</button>
+                    </td> 
+                    <td>
+                      <button className="btn btn-primary">Add</button>
+                    </td>
                   </tr>
                 );
               })}

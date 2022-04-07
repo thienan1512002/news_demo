@@ -11,3 +11,7 @@ export const loadData =  (content)=>{
 export const createData =  (content,body)=>{
     return  axios.post(url + content, body);
 }
+
+export const updateData = (id,content,body)=>{
+    return  axios.put(url + content + "/" + id, body);
+}
