@@ -43,7 +43,7 @@ function CreateNewContent(props) {
       <h3 align="center">Create News</h3>
       <div class="row">
         <div class="col-6">
-          <form onSubmit={handleTextContent}>
+          <form onSubmit={handleTextContent} accept-charset="UTF-8">
             <div className="row">
               <div className="form-group">
                 <label>Content</label>
@@ -82,7 +82,11 @@ function CreateNewContent(props) {
             <div className="row">
               <div className="form-group">
                 <label>Sequence</label>
-                <input type="number" className="form-control" name="imgSequence" />
+                <input
+                  type="number"
+                  className="form-control"
+                  name="imgSequence"
+                />
               </div>
             </div>
             <div className="row">

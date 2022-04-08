@@ -1,17 +1,21 @@
 import { React, useState, useEffect } from "react";
-import { loadData, createData } from "../services/Data";
+import { loadData, createData, updateData } from "../services/Data";
+
+
+
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
-
+  
   useEffect(() => {
     loadData("newsheaders").then((data) => {
       setNewHeaders(data.data);
     });
-    loadData("news");
+   
   });
 
   
   const addNewsHeader = (e) => {
+   
     e.preventDefault();
     createData("newsheaders", {
       newsTitle: e.target.newsTitle.value,
@@ -21,7 +25,18 @@ function News() {
       console.log(result);
     });
   }
-
+  const approveNews = (id, newsTitle, newsDesc, newsDate, newsUser) => {
+    updateData("newsheaders/", id, {
+      id: id,
+      newsTitle: newsTitle,
+      newsDesc: newsDesc,
+      newsDate: newsDate,
+      newsUser: newsUser,
+      approved: true,
+    }).then((result) => {
+      console.log(result);
+    });
+  };
   return (
     <div className="row">
       <div className="col-6">
@@ -76,14 +91,27 @@ function News() {
                     <td>{newsHeader.newsDesc}</td>
                     <td>{newsHeader.newsDate}</td>
                     <td>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() =>
+                          approveNews(
+                            newsHeader.id,
+                            newsHeader.newsTitle,
+                            newsHeader.newsDesc,
+                            newsHeader.newsDate,
+                            newsHeader.newsUser
+                          )
+                        }
+                      >
+                        <i className="fa fa-check"></i>
+                      </button>
+                    </td>
+                    <td>
                       <button className="btn btn-primary">Add</button>
                     </td>
                     <td>
                       <button className="btn btn-primary">Add</button>
-                    </td> 
-                    <td>
-                      <button className="btn btn-primary">Add</button>
-                    </td> 
+                    </td>
                     <td>
                       <button className="btn btn-primary">Add</button>
                     </td>
