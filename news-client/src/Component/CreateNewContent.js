@@ -1,10 +1,10 @@
-import { React, useState, useEffect } from "react";
+import { React } from "react";
 import { createData } from "../services/Data";
 
 function CreateNewContent(props) {
 
-    const [textSequence,setTextSequence] = useState(null);
-    const [imageSequence,setImageSequence] = useState(null);
+    
+
   const handleTextContent = (e) => {           
       e.preventDefault();
       createData("texts", {
@@ -18,8 +18,7 @@ function CreateNewContent(props) {
 
   const handleImageContent = (e) => {
     const today = new Date();
-      e.preventDefault();
-      const file = e.target[0].files[0];
+      e.preventDefault();     
       let formData = new FormData();
       formData.append("imageFile", e.target[0].files[0]);
       formData.append("content", e.target[0].files[0].name);
@@ -32,18 +31,13 @@ function CreateNewContent(props) {
         formData,
       ).then(res=>console.log(res));
   }
-  const handleTextSequence = (e) =>{
-      setTextSequence(e.target.value);
-  }
-  const handleImageSequence = (e) => {
-    setImageSequence(e.target.value);
-  };
+
   return (
     <div>
       <h3 align="center">Create News</h3>
       <div class="row">
         <div class="col-6">
-          <form onSubmit={handleTextContent} accept-charset="UTF-8">
+          <form onSubmit={handleTextContent}>
             <div className="row">
               <div className="form-group">
                 <label>Content</label>
@@ -52,6 +46,7 @@ function CreateNewContent(props) {
                   name="content"
                   rows="20"
                   name="textContent"
+                  wrap="virtual"
                 ></textarea>
               </div>
             </div>
@@ -70,7 +65,7 @@ function CreateNewContent(props) {
           </form>
         </div>
         <div class="col-6">
-          <form onSubmit={handleImageContent} enctype="multipart/form-data">
+          <form onSubmit={handleImageContent} encType="multipart/form-data">
             <div className="row">
               <div className="form-group">
                 <label>Images</label>
