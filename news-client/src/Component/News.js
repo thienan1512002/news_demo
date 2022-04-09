@@ -1,11 +1,11 @@
 import { React, useState, useEffect } from "react";
 import { loadData, createData, updateData } from "../services/Data";
-
+import {useHistory} from 'react-router-dom';
 
 
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
-  
+  const redirect = useHistory();
   useEffect(() => {
     loadData("newsheaders").then((data) => {
       setNewHeaders(data.data);
@@ -37,6 +37,9 @@ function News() {
       console.log(result);
     });
   };
+  const createContent = (id)=>{
+    redirect.push("/create-news-content/"+id);
+  }
   return (
     <div className="row">
       <div className="col-6">
@@ -74,9 +77,7 @@ function News() {
               <th>News User</th>
               <th>News Desc</th>
               <th>News Date</th>
-              <th>Action</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th>Action</th>              
               <th>Content</th>
             </tr>
           </thead>
@@ -107,14 +108,8 @@ function News() {
                       </button>
                     </td>
                     <td>
-                      <button className="btn btn-primary">Add</button>
-                    </td>
-                    <td>
-                      <button className="btn btn-primary">Add</button>
-                    </td>
-                    <td>
-                      <button className="btn btn-primary">Add</button>
-                    </td>
+                      <button className="btn btn-primary" onClick={() =>{createContent(newsHeader.id)}}>Add</button>
+                    </td>                   
                   </tr>
                 );
               })}

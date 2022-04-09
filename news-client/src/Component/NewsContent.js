@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from "react";
 import { loadData } from "../services/Data";
-
-function Content(props) {
+import {useParams} from "react-router-dom";
+function Content() {
   const [contents, setContents] = useState(null);
-
+  const id  = useParams();
+  
   useEffect(() => {
-    loadData("news/1").then((data) => {
+    loadData("news/"+id.id).then((data) => {
       setContents(data.data);
     });
   });

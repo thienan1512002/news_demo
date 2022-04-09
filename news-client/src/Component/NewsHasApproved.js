@@ -1,7 +1,8 @@
 import { React, useState, useEffect } from "react";
 import { loadData } from "../services/Data";
-
+import { useHistory } from "react-router-dom";
 function NewsHasApproved() {
+  const redirect = useHistory();
   const [news, setNews] = useState(null);
   useEffect(() => {
     loadData("news").then((data) => {
@@ -9,10 +10,12 @@ function NewsHasApproved() {
     });
     
   });
-
+  const seeDetails = (id) => {
+    redirect.push("/news-details/" + id);
+  }
   return (
     <div className="container">
-      <table className="table table-bordered">
+      <table className="table table-bordered table-hover">
         <thead>
           <tr>
               <th>Title</th>
@@ -25,7 +28,7 @@ function NewsHasApproved() {
             {news && news.filter(news => news.approved === true).map(news => {
                 
                 return (
-                  <tr>
+                  <tr onClick={() =>{seeDetails(news.id)}} style={{cursor:"pointer"}}>
                     <td>{news.newsTitle}</td>
                     <td>{news.newsDesc}</td>
                     <td>{news.newsUser}</td>                 

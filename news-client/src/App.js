@@ -12,9 +12,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
         <li>
           <Link to="/">Home</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/news-details">News Details</Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/create-news-header">Create News Header </Link>
         </li>

@@ -1,15 +1,13 @@
 import { React } from "react";
 import { createData } from "../services/Data";
-
-function CreateNewsContent(props) {
-
-    
-
+import {useParams} from 'react-router-dom';
+function CreateNewsContent() {
+  const { id } = useParams();
   const handleTextContent = (e) => {           
       e.preventDefault();
       createData("texts", {
         content: e.target.textContent.value,
-        newsId: 1,
+        newsId: id,
         contentType: "text",
         contentUser: "An",
         sequence: e.target.sequence.value,      
