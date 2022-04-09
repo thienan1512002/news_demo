@@ -2,13 +2,41 @@ import logo from './logo.svg';
 import './App.css';
 import News from './Component/News';
 import NewsContent from './Component/NewsContent';
-import CreateNewContent from './Component/CreateNewContent';
+import CreateNewsContent from './Component/CreateNewContent';
 import NewsHasApproved from './Component/NewsHasApproved';
-function App() {
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+ function App() {
   return (
-    <div className="container">
-      <NewsContent />
-    </div>
+    <Router>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/news-details">News Details</Link>
+        </li>
+        <li>
+          <Link to="/create-news-header">Create News Header </Link>
+        </li>
+      </ul>
+      <br></br>
+      <Switch>
+        <Route exact path="/">
+          <NewsHasApproved />
+        </Route>
+        <Route
+          path="/create-news-content/:id"
+          children={<CreateNewsContent />}
+        />
+
+        <Route path="/news-details/:id" children={<NewsContent/>}/>
+          
+        
+        <Route path="/create-news-header">
+          <News />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

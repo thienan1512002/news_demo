@@ -1,7 +1,7 @@
 import { React } from "react";
 import { createData } from "../services/Data";
 
-function CreateNewContent(props) {
+function CreateNewsContent(props) {
 
     
 
@@ -42,8 +42,7 @@ function CreateNewContent(props) {
               <div className="form-group">
                 <label>Content</label>
                 <textarea
-                  className="form-control"
-                  name="content"
+                  className="form-control"                 
                   rows="20"
                   name="textContent"
                   wrap="virtual"
@@ -97,4 +96,4 @@ function CreateNewContent(props) {
   );
 }
 
-export default CreateNewContent;
+export default CreateNewsContent;
