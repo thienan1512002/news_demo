@@ -26,6 +26,8 @@ function News() {
       console.log(result);
       if(result.status===201){
         toast.success("Add new News Header Success");
+      }else {
+        toast.error("Something error !");
       }
     });
   }
@@ -38,7 +40,9 @@ function News() {
       newsUser: newsUser,
       approved: true,
     }).then((result) => {
-      console.log(result);
+      if(result.status === 204){
+        toast.success("Approve News successfully");
+      }
     });
   };
   const createContent = (id)=>{
@@ -135,7 +139,7 @@ function News() {
           </table>
         </div>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" reverseOrder={true} />
     </div>
   );
 }

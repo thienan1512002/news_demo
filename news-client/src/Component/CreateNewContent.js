@@ -1,34 +1,46 @@
 import { React } from "react";
 import { createData } from "../services/Data";
-import {useParams} from 'react-router-dom';
+import { useParams } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 function CreateNewsContent() {
   const { id } = useParams();
-  const handleTextContent = (e) => {           
-      e.preventDefault();
-      createData("texts", {
-        content: e.target.textContent.value,
-        newsId: id,
-        contentType: "txt",
-        contentUser: "An",
-        sequence: e.target.sequence.value,      
-      }).then((result) => console.log(result));
-  }
+  const handleTextContent = (e) => {
+    e.preventDefault();
+    createData("texts", {
+      content: e.target.textContent.value,
+      newsId: id,
+      contentType: "txt",
+      contentUser: "An",
+      sequence: e.target.sequence.value,
+    }).then((result) => {
+      if (result.status === 201) {
+        toast.success("Add new Text Content Success");
+      } else {
+        toast.error("Something error !");
+      }
+    });
+  };
 
   const handleImageContent = (e) => {
     const today = new Date();
-      e.preventDefault();     
-      let formData = new FormData();
-      formData.append("imageFile", e.target[0].files[0]);
-      formData.append("content", e.target[0].files[0].name);
-      formData.append("newsId", 1);
-      formData.append("contentType", "img");
-      formData.append("contentDate", today.getYear() + "-" + today.getMonth() + "-" + today.getDate());
-      formData.append("contentUser", "An");
-      formData.append("sequence", e.target.imgSequence.value);
-      createData("newscontents", 
-        formData,
-      ).then(res=>console.log(res));
-  }
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append("imageFile", e.target[0].files[0]);
+    formData.append("content", e.target[0].files[0].name);
+    formData.append("newsId", 1);
+    formData.append("contentType", "img");
+    formData.append(
+      "contentDate",
+      today.getYear() + "-" + today.getMonth() + "-" + today.getDate()
+    );
+    formData.append("contentUser", "An");
+    formData.append("sequence", e.target.imgSequence.value);
+    createData("newscontents", formData).then((res) => {
+      if(res.status === 200){
+        toast.success("Add new Image Content Success");
+      }
+    });
+  };
 
   return (
     <div>
@@ -39,18 +51,13 @@ function CreateNewsContent() {
             <div className="row">
               <div className="form-group">
                 <label>Content</label>
-                <textarea
-                  className="form-control"                 
-                  rows="20"
-                  name="textContent"
-                  wrap="virtual"
-                ></textarea>
+                <input className="form-control" name="textContent" />
               </div>
             </div>
             <div className="row">
               <div className="form-group">
                 <label>Sequence</label>
-                <input type="number" className="form-control" name="sequence" />
+                <input type="text" className="form-control" name="sequence" />
               </div>
             </div>
             <div className="row">
@@ -90,6 +97,7 @@ function CreateNewsContent() {
           </form>
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={true} />
     </div>
   );
 }

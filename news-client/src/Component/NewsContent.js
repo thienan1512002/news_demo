@@ -1,13 +1,13 @@
 import { React, useState, useEffect } from "react";
 import { loadData } from "../services/Data";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import dateFormat from "dateformat";
 function Content() {
   const [contents, setContents] = useState(null);
-  const id  = useParams();
-  
+  const id = useParams();
+
   useEffect(() => {
-    loadData("news/"+id.id).then((data) => {
+    loadData("news/" + id.id).then((data) => {
       setContents(data.data);
     });
   });
@@ -41,7 +41,7 @@ function Content() {
                   }
                 })}
             </div>
-          ); 
+          );
         })}
     </div>
   );

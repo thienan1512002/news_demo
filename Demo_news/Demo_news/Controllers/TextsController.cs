@@ -78,7 +78,6 @@ namespace Demo_news.Controllers
         [HttpPost]
         public async Task<ActionResult<NewsContent>> PostNewsContent(NewsContent newsContent)
         {
-            newsContent.Content = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(newsContent.Content));
             newsContent.ContentDate = DateTime.Now;
             _context.NewsContents.Add(newsContent);
             await _context.SaveChangesAsync();
