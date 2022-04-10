@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import News from './Component/News';
 import NewsContent from './Component/NewsContent';
@@ -8,17 +7,36 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
  function App() {
   return (
     <Router>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        {/* <li>
-          <Link to="/news-details">News Details</Link>
-        </li> */}
-        <li>
-          <Link to="/create-news-header">Create News Header </Link>
-        </li>
-      </ul>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div className="container">
+          <span className="navbar-brand">iWorkspace</span>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/create-news-header">
+                  Create News Header{" "}
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
       <br></br>
       <Switch>
         <Route exact path="/">
@@ -29,9 +47,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
           children={<CreateNewsContent />}
         />
 
-        <Route path="/news-details/:id" children={<NewsContent/>}/>
-          
-        
+        <Route path="/news-details/:id" children={<NewsContent />} />
+
         <Route path="/create-news-header">
           <News />
         </Route>

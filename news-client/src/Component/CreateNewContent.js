@@ -8,7 +8,7 @@ function CreateNewsContent() {
       createData("texts", {
         content: e.target.textContent.value,
         newsId: id,
-        contentType: "text",
+        contentType: "txt",
         contentUser: "An",
         sequence: e.target.sequence.value,      
       }).then((result) => console.log(result));

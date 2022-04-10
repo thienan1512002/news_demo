@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { loadData } from "../services/Data";
 import { useHistory } from "react-router-dom";
+import dateFormat from "dateformat";
 function NewsHasApproved() {
   const redirect = useHistory();
   const [news, setNews] = useState(null);
@@ -28,11 +29,21 @@ function NewsHasApproved() {
             {news && news.filter(news => news.approved === true).map(news => {
                 
                 return (
-                  <tr onClick={() =>{seeDetails(news.id)}} style={{cursor:"pointer"}}>
+                  <tr
+                    onClick={() => {
+                      seeDetails(news.id);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
                     <td>{news.newsTitle}</td>
                     <td>{news.newsDesc}</td>
-                    <td>{news.newsUser}</td>                 
-                    <td>{news.newsDate}</td>
+                    <td>{news.newsUser}</td>
+                    <td>
+                      {dateFormat(
+                        news.newsDate,
+                        "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                      )}
+                    </td>
                   </tr>
                 );
             })}
