@@ -11,7 +11,8 @@ create table NewsHeader
 	NewsDesc nvarchar(max)not null,
 	NewsDate Datetime not null , 
 	NewsUser nvarchar(100) not null ,
-	Approved bit default (0)
+	Approved bit default (0) , 
+	isFinished bit default (0)
 )
 
 create table NewsContent
