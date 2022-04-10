@@ -80,6 +80,7 @@ namespace Demo_news.Models
                 entity.Property(e => e.NewsTitle).HasMaxLength(100);
 
                 entity.Property(e => e.Approved).HasColumnType("bit").HasColumnName("Approved");
+                entity.Property(e => e.IsFinished).HasColumnType("bit").HasColumnName("isFinished");
             });
 
             OnModelCreatingPartial(modelBuilder);

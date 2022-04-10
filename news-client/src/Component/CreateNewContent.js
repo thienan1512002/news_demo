@@ -1,8 +1,20 @@
-import { React , useRef } from "react";
-import { createData } from "../services/Data";
+import { React, useRef, useState, useEffect } from "react";
+import { createData, loadData , updateData } from "../services/Data";
 import { useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+
+const initalState = {
+  id : null,
+  newsTitle : '',
+  newsDesc : '',
+  newsDate : '',
+  newsUser : '',
+  approved : false,
+  isFinished : false
+}
+
 function CreateNewsContent() {
+  const [header, setHeader] = useState(initalState);
   const { id } = useParams();
   const ref = useRef();
   const handleTextContent = (e) => {
@@ -16,8 +28,8 @@ function CreateNewsContent() {
     }).then((result) => {
       if (result.status === 201) {
         toast.success("Add new Text Content Success");
-        e.target.textContent.value='';
-        e.target.sequence.value='';
+        e.target.textContent.value = "";
+        e.target.sequence.value = "";
       } else {
         toast.error("Something error !");
       }
@@ -39,24 +51,30 @@ function CreateNewsContent() {
     formData.append("contentUser", "An");
     formData.append("sequence", e.target.imgSequence.value);
     createData("newscontents", formData).then((res) => {
-      if(res.status === 200){
+      if (res.status === 200) {
         toast.success("Add new Image Content Success");
-        e.target.imgSequence.value='';
+        e.target.imgSequence.value = "";
         ref.current.value = "";
       }
     });
   };
-
+    
+ 
+  
   return (
-    <div>
-      <h3 align="center">Create News</h3>
-      <div class="row">
-        <div class="col-6">
+    <div className="container">
+      <h3 align="center">Create News</h3>     
+      <div className="row">
+        <div className="col-6">
           <form onSubmit={handleTextContent}>
             <div className="row">
               <div className="form-group">
                 <label>Content</label>
-                <textarea className="form-control" name="textContent" rows="15"></textarea>
+                <textarea
+                  className="form-control"
+                  name="textContent"
+                  rows="15"
+                ></textarea>
               </div>
             </div>
             <div className="row">
@@ -79,7 +97,12 @@ function CreateNewsContent() {
               <div className="form-group">
                 <label>Images</label>
                 <br></br>
-                <input type="file" className="form-control-file" name="file" ref={ref} />
+                <input
+                  type="file"
+                  className="form-control-file"
+                  name="file"
+                  ref={ref}
+                />
               </div>
             </div>
 

@@ -46,10 +46,12 @@ namespace Demo_news.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutNewsHeader(int id, NewsHeader newsHeader)
         {
+            
             if (id != newsHeader.Id)
             {
                 return BadRequest();
             }
+            
             newsHeader.NewsDate = DateTime.Now;
             _context.Entry(newsHeader).State = EntityState.Modified;
 
@@ -69,7 +71,7 @@ namespace Demo_news.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(newsHeader);
         }
 
         // POST: api/NewsHeaders
@@ -79,6 +81,7 @@ namespace Demo_news.Controllers
         {
             newsHeader.NewsDate = DateTime.Now;
             newsHeader.Approved = false;
+            newsHeader.IsFinished = false;
             _context.NewsHeaders.Add(newsHeader);
             await _context.SaveChangesAsync();
 

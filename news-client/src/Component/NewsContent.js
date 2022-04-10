@@ -5,7 +5,7 @@ import dateFormat from "dateformat";
 function Content() {
   const [contents, setContents] = useState(null);
   const id = useParams();
-
+  
   useEffect(() => {
     loadData("news/" + id.id).then((data) => {
       setContents(data.data);
@@ -16,6 +16,7 @@ function Content() {
     <div className="container">
       {contents &&
         contents.map((news) => {
+         
           return (
             <div>
               <h2 align="center">{news.newsTitle}</h2>

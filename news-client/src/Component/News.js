@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
+  const [disable, setDisable] = useState(false);
   const redirect = useHistory();
   useEffect(() => {
     loadData("newsheaders").then((data) => {
@@ -39,9 +40,25 @@ function News() {
       newsDate: newsDate,
       newsUser: newsUser,
       approved: true,
+      isFinished:true
     }).then((result) => {
       if(result.status === 204){
         toast.success("Approve News successfully");
+      }
+    });
+  };
+  const finishedNews = (id, newsTitle, newsDesc, newsDate, newsUser) => {
+    updateData("newsheaders/", id, {
+      id: id,
+      newsTitle: newsTitle,
+      newsDesc: newsDesc,
+      newsDate: newsDate,
+      newsUser: newsUser,
+      approved: false,
+      isFinished:true,
+    }).then((result) => {
+      if (result.status === 200) {
+        toast.success("Finished News successfully");
       }
     });
   };
@@ -92,6 +109,7 @@ function News() {
                 <th>Action</th>
                 <th>Content</th>
                 <th>View Details</th>
+                <th>Finished</th>
               </tr>
             </thead>
             <tbody>
@@ -99,6 +117,7 @@ function News() {
                 newsHeader
                   .filter((item) => item.approved === false)
                   .map((newsHeader) => {
+                    
                     return (
                       <tr key={newsHeader.id}>
                         <td>{newsHeader.newsTitle}</td>
@@ -110,6 +129,7 @@ function News() {
                             "dddd, mmmm dS, yyyy, h:MM:ss TT"
                           )}
                         </td>
+
                         <td>
                           <button
                             className="btn btn-success"
@@ -122,6 +142,7 @@ function News() {
                                 newsHeader.newsUser
                               )
                             }
+                            disabled={!newsHeader.isFinished}
                           >
                             <i className="fa fa-check"></i>
                           </button>
@@ -137,9 +158,36 @@ function News() {
                           </button>
                         </td>
                         <td>
-                          <button className="btn btn-info" onClick={() => {viewContent(newsHeader.id)}}>
+                          <button
+                            className="btn btn-info"
+                            onClick={() => {
+                              viewContent(newsHeader.id);
+                            }}
+                          >
                             <i className="fa fa-info-circle"></i>
                           </button>
+                        </td>
+                        <td>
+                          {newsHeader.isFinished ? (
+                            
+                              <i className="fa fa-check"></i>
+                            
+                          ) : (
+                            <button
+                              className="btn btn-success"
+                              onClick={() =>
+                                finishedNews(
+                                  newsHeader.id,
+                                  newsHeader.newsTitle,
+                                  newsHeader.newsDesc,
+                                  newsHeader.newsDate,
+                                  newsHeader.newsUser
+                                )
+                              }
+                            >
+                              <i className="fa fa-check"></i>
+                            </button>
+                          )}
                         </td>
                       </tr>
                     );

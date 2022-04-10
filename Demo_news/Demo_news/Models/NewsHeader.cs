@@ -19,6 +19,7 @@ namespace Demo_news.Models
         public string NewsUser { get; set; }
 
         public Boolean Approved { get; set; }
+        public Boolean IsFinished { get; set; }
 
         public virtual ICollection<NewsContent> NewsContents { get; set; }
     }
