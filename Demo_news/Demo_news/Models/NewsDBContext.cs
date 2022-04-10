@@ -42,7 +42,6 @@ namespace Demo_news.Models
                 entity.Property(e => e.ContentId).HasColumnName("contentId");
 
                 entity.Property(e => e.Content)
-                    .HasColumnType("text")
                     .HasColumnName("content");
 
                 entity.Property(e => e.ContentDate)
