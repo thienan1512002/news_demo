@@ -50,7 +50,7 @@ namespace Demo_news.Controllers
             {
                 return BadRequest();
             }
-
+            newsHeader.NewsDate = DateTime.Now;
             _context.Entry(newsHeader).State = EntityState.Modified;
 
             try

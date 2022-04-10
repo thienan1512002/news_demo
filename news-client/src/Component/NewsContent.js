@@ -34,6 +34,13 @@ function Content() {
                         src={"http://localhost:13715/Images/" + content.content}
                         width="300"
                         height="100"
+                        className="imgCenter"
+                        style={{
+                          display: "block",
+                          marginLeft:"auto",
+                          marginRight:"auto",
+                          width: "auto",
+                        }}
                       />
                     );
                   } else {
@@ -43,6 +50,7 @@ function Content() {
             </div>
           );
         })}
+      
     </div>
   );
 }

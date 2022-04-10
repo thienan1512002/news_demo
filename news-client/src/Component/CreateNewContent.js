@@ -51,7 +51,7 @@ function CreateNewsContent() {
             <div className="row">
               <div className="form-group">
                 <label>Content</label>
-                <input className="form-control" name="textContent" />
+                <textarea className="form-control" name="textContent" rows="15"></textarea>
               </div>
             </div>
             <div className="row">
