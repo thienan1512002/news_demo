@@ -1,9 +1,10 @@
-import { React } from "react";
+import { React , useRef } from "react";
 import { createData } from "../services/Data";
 import { useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 function CreateNewsContent() {
   const { id } = useParams();
+  const ref = useRef();
   const handleTextContent = (e) => {
     e.preventDefault();
     createData("texts", {
@@ -15,6 +16,8 @@ function CreateNewsContent() {
     }).then((result) => {
       if (result.status === 201) {
         toast.success("Add new Text Content Success");
+        e.target.textContent.value='';
+        e.target.sequence.value='';
       } else {
         toast.error("Something error !");
       }
@@ -27,7 +30,7 @@ function CreateNewsContent() {
     let formData = new FormData();
     formData.append("imageFile", e.target[0].files[0]);
     formData.append("content", e.target[0].files[0].name);
-    formData.append("newsId", 1);
+    formData.append("newsId", id);
     formData.append("contentType", "img");
     formData.append(
       "contentDate",
@@ -38,6 +41,8 @@ function CreateNewsContent() {
     createData("newscontents", formData).then((res) => {
       if(res.status === 200){
         toast.success("Add new Image Content Success");
+        e.target.imgSequence.value='';
+        ref.current.value = "";
       }
     });
   };
@@ -74,7 +79,7 @@ function CreateNewsContent() {
               <div className="form-group">
                 <label>Images</label>
                 <br></br>
-                <input type="file" className="form-control-file" name="file" />
+                <input type="file" className="form-control-file" name="file" ref={ref} />
               </div>
             </div>
 

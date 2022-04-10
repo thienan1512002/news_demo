@@ -48,6 +48,9 @@ function News() {
   const createContent = (id)=>{
     redirect.push("/create-news-content/"+id);
   }
+  const viewContent = (id)=>{
+    redirect.push("/news-details/"+id);
+  }
   return (
     <div className="container">
       <div className="row">
@@ -88,6 +91,7 @@ function News() {
                 <th>News Date</th>
                 <th>Action</th>
                 <th>Content</th>
+                <th>View Details</th>
               </tr>
             </thead>
             <tbody>
@@ -108,7 +112,7 @@ function News() {
                         </td>
                         <td>
                           <button
-                            className="btn btn-primary"
+                            className="btn btn-success"
                             onClick={() =>
                               approveNews(
                                 newsHeader.id,
@@ -129,7 +133,12 @@ function News() {
                               createContent(newsHeader.id);
                             }}
                           >
-                            Add
+                            <i className="fa fa-plus-square"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <button className="btn btn-info" onClick={() => {viewContent(newsHeader.id)}}>
+                            <i className="fa fa-info-circle"></i>
                           </button>
                         </td>
                       </tr>
