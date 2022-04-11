@@ -71,7 +71,7 @@ namespace Demo_news.Controllers
                 }
             }
 
-            return Ok(newsHeader);
+            return Ok   (newsHeader);
         }
 
         // POST: api/NewsHeaders

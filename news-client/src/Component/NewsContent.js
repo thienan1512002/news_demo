@@ -33,14 +33,14 @@ function Content() {
                     return (
                       <img
                         src={"http://localhost:13715/Images/" + content.content}
-                        width="300"
-                        height="100"
+                       
                         className="imgCenter"
                         style={{
                           display: "block",
                           marginLeft:"auto",
                           marginRight:"auto",
-                          width: "auto",
+                          width: "auto%",
+                          height: "auto"
                         }}
                       />
                     );

@@ -27,6 +27,8 @@ function News() {
       console.log(result);
       if(result.status===201){
         toast.success("Add new News Header Success");
+        e.target.newsTitle.value='';
+        e.target.newsDesc.value = '';
       }else {
         toast.error("Something error !");
       }
@@ -42,7 +44,7 @@ function News() {
       approved: true,
       isFinished:true
     }).then((result) => {
-      if(result.status === 204){
+      if(result.status === 200){
         toast.success("Approve News successfully");
       }
     });
@@ -115,6 +117,7 @@ function News() {
             <tbody>
               {newsHeader &&
                 newsHeader
+                  .sort((a,b)=>a.id-b.id)
                   .filter((item) => item.approved === false)
                   .map((newsHeader) => {
                     

@@ -19,15 +19,18 @@ function NewsHasApproved() {
       <table className="table table-bordered table-hover">
         <thead>
           <tr>
-              <th>Title</th>
-              <th>Desc</th>
-              <th>Author</th>             
-              <th>Date</th>
+            <th>Title</th>
+            <th>Desc</th>
+            <th>Author</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
-            {news && news.filter(news => news.approved === true).map(news => {
-                
+          {news &&
+            news
+              .sort((a, b) => a.id - b.id)
+              .filter((news) => news.approved === true)
+              .map((news) => {
                 return (
                   <tr
                     onClick={() => {
@@ -46,7 +49,7 @@ function NewsHasApproved() {
                     </td>
                   </tr>
                 );
-            })}
+              })}
         </tbody>
       </table>
     </div>
