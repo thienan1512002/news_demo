@@ -11,9 +11,18 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
   const [disable, setDisable] = useState(false);
+  const [txtTitle,setTxtTitle] = useState(null);
+  const [txtDesc,setTxtDesc] = useState(null);
+  const [open,setOpen] = useState(false);
   const redirect = useHistory();
   useEffect(() => {
     loadData("newsheaders").then((data) => {
@@ -24,23 +33,20 @@ function News() {
   const addNewsHeader = (e) => {
     e.preventDefault();
     createData("newsheaders", {
-      newsTitle: e.target.newsTitle.value,
-      newsDesc: e.target.newsDesc.value,
+      newsTitle: txtTitle,
+      newsDesc: txtDesc,
       newsUser: "admin",
     })
       .then((result) => {
         console.log(result);
         if (result.status === 201) {
+          setOpen(false);
           toast.success("Add new News Header Success");
-          e.target.newsTitle.value = "";
-          e.target.newsDesc.value = "";
+           redirect.push("/create-news-content/" + (newsHeader.length + 1));
         } else {
           toast.error("Something error !");
         }
-      })
-      .then((result) => {
-        redirect.push("/create-news-content/" + (newsHeader.length + 1));
-      });
+      });   
   };
   const approveNews = (id) => {
     updateData("newsheaders/approved/", id, {
@@ -67,23 +73,32 @@ function News() {
   const viewContent = (id) => {
     redirect.push("/news-details/" + id);
   };
+  const openModal = () => {
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  }
+  const handleChangeTitle = (e) => {
+    setTxtTitle(e.target.value);
+  }
+  const handleChangeDesc = (e) => {
+    setTxtDesc(e.target.value);
+  }
+
   return (
     <Container fixed>
       <Box sx={{ width: "100%" }}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Button variant="contained" xs={3} onClick={openModal}>
+          Add News
+        </Button>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: -1, sm: -2, md: -3 }}>
           {newsHeader &&
             newsHeader.map((newsHeader) => {
               return (
-                <Grid item xs={3}>
-                  <Card sx={{ width: 300, height: 320 }} variant="outlined">
+                <Grid item xs={6}>
+                  <Card sx={{ width: 500, height: 200 }} variant="outlined">
                     <CardContent>
-                      <Typography
-                        sx={{ fontSize: 14 }}
-                        color="text.secondary"
-                        gutterBottom
-                      >
-                        {dateFormat(newsHeader.newsDate, "dd/mm/yyyy HH:MM")}
-                      </Typography>
                       <Typography variant="h5" component="div">
                         {newsHeader.newsTitle}
                       </Typography>
@@ -91,19 +106,56 @@ function News() {
                         {newsHeader.newsDesc}
                       </Typography>
                       <Typography variant="body2">
-                        {newsHeader.newsUser}
+                        Author : {newsHeader.newsUser}
                         <br />
                       </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Learn More</Button>
-                    </CardActions>
+                      <Typography variant="body2">
+                        {dateFormat(newsHeader.newsDate, "dd/mm/yyyy HH:MM")}
+                        <br />
+                      </Typography>
+                    </CardContent>                   
                   </Card>
                 </Grid>
               );
             })}
         </Grid>
       </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here.
+            We will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="News title"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={txtTitle}
+            onChange={handleChangeTitle}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="News description"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={txtDesc}
+            onChange={handleChangeDesc}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={addNewsHeader}>Subscribe</Button>
+        </DialogActions>
+      </Dialog>
+      <Toaster position="top-right" reverseOrder={true} />
     </Container>
   );
 }
