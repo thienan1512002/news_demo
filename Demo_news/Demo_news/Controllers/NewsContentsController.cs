@@ -70,12 +70,34 @@ namespace Demo_news.Controllers
             return NoContent();
         }
 
+
+        [HttpPut("DnD/{id}")]
+        public async Task<IActionResult> DnDUpdate(int id, List<NewsContent> contents)
+        {
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+            foreach (NewsContent content in contents)
+            {
+                var model = await _context.NewsContents.FirstOrDefaultAsync(m => m.NewsId == id && m.ContentId == content.ContentId);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+                model.Sequence = content.Sequence;
+                _context.NewsContents.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            return NoContent();
+        }
         // POST: api/NewsContents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<NewsContent>> PostNewsContent([FromForm] NewsContent newsContent)
         {
             newsContent.Content = await SaveImage(newsContent.ImageFile);
+            newsContent.Sequence = _context.NewsContents.Count(m => m.NewsId == newsContent.NewsId);
             newsContent.ContentDate = DateTime.Now;
             _context.NewsContents.Add(newsContent);
             await _context.SaveChangesAsync();
@@ -114,5 +136,6 @@ namespace Demo_news.Controllers
         {
             return _context.NewsContents.Any(e => e.ContentId == id);
         }
+
     }
 }

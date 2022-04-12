@@ -1,9 +1,16 @@
 import { React, useState, useEffect } from "react";
 import { loadData, createData, updateData } from "../services/Data";
-import {useHistory} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import dateFormat from "dateformat";
 import toast, { Toaster } from "react-hot-toast";
-
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
   const [disable, setDisable] = useState(false);
@@ -12,195 +19,92 @@ function News() {
     loadData("newsheaders").then((data) => {
       setNewHeaders(data.data);
     });
-   
   });
 
-  
   const addNewsHeader = (e) => {
-   
     e.preventDefault();
     createData("newsheaders", {
       newsTitle: e.target.newsTitle.value,
       newsDesc: e.target.newsDesc.value,
       newsUser: "admin",
-    }).then((result) => {
-      console.log(result);
-      if(result.status===201){
-        toast.success("Add new News Header Success");
-        e.target.newsTitle.value='';
-        e.target.newsDesc.value = '';
-      }else {
-        toast.error("Something error !");
-      }
-    });
-  }
-  const approveNews = (id, newsTitle, newsDesc, newsDate, newsUser) => {
-    updateData("newsheaders/", id, {
+    })
+      .then((result) => {
+        console.log(result);
+        if (result.status === 201) {
+          toast.success("Add new News Header Success");
+          e.target.newsTitle.value = "";
+          e.target.newsDesc.value = "";
+        } else {
+          toast.error("Something error !");
+        }
+      })
+      .then((result) => {
+        redirect.push("/create-news-content/" + (newsHeader.length + 1));
+      });
+  };
+  const approveNews = (id) => {
+    updateData("newsheaders/approved/", id, {
       id: id,
-      newsTitle: newsTitle,
-      newsDesc: newsDesc,
-      newsDate: newsDate,
-      newsUser: newsUser,
-      approved: true,
-      isFinished:true
     }).then((result) => {
-      if(result.status === 200){
+      if (result.status === 200) {
         toast.success("Approve News successfully");
       }
     });
   };
-  const finishedNews = (id, newsTitle, newsDesc, newsDate, newsUser) => {
-    updateData("newsheaders/", id, {
+  const finishedNews = (id) => {
+    updateData("newsheaders/finished/", id, {
       id: id,
-      newsTitle: newsTitle,
-      newsDesc: newsDesc,
-      newsDate: newsDate,
-      newsUser: newsUser,
-      approved: false,
-      isFinished:true,
     }).then((result) => {
+      console.log(result);
       if (result.status === 200) {
         toast.success("Finished News successfully");
       }
     });
   };
-  const createContent = (id)=>{
-    redirect.push("/create-news-content/"+id);
-  }
-  const viewContent = (id)=>{
-    redirect.push("/news-details/"+id);
-  }
+  const createContent = (id) => {
+    redirect.push("/create-news-content/" + id);
+  };
+  const viewContent = (id) => {
+    redirect.push("/news-details/" + id);
+  };
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-6">
-          <form onSubmit={addNewsHeader}>
-            <div className="form-group">
-              <label>News Title</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter News Title"
-                name="newsTitle"
-              />
-            </div>
-            <div className="form-group">
-              <label>News Desc</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter News Title"
-                name="newsDesc"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input className="btn btn-success" type="submit" />
-            </div>
-          </form>
-        </div>
-        <div className="col-6">
-          <h4>News not Approval</h4>
-          <table className="table table-hover table-bordered">
-            <thead>
-              <tr>
-                <th>News Title</th>
-                <th>News User</th>
-                <th>News Desc</th>
-                <th>News Date</th>
-                <th>Action</th>
-                <th>Content</th>
-                <th>View Details</th>
-                <th>Finished</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newsHeader &&
-                newsHeader
-                  .sort((a,b)=>a.id-b.id)
-                  .filter((item) => item.approved === false)
-                  .map((newsHeader) => {
-                    
-                    return (
-                      <tr key={newsHeader.id}>
-                        <td>{newsHeader.newsTitle}</td>
-                        <td>{newsHeader.newsUser}</td>
-                        <td>{newsHeader.newsDesc}</td>
-                        <td>
-                          {dateFormat(
-                            newsHeader.newsDate,
-                            "dddd, mmmm dS, yyyy, h:MM:ss TT"
-                          )}
-                        </td>
-
-                        <td>
-                          <button
-                            className="btn btn-success"
-                            onClick={() =>
-                              approveNews(
-                                newsHeader.id,
-                                newsHeader.newsTitle,
-                                newsHeader.newsDesc,
-                                newsHeader.newsDate,
-                                newsHeader.newsUser
-                              )
-                            }
-                            disabled={!newsHeader.isFinished}
-                          >
-                            <i className="fa fa-check"></i>
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                              createContent(newsHeader.id);
-                            }}
-                          >
-                            <i className="fa fa-plus-square"></i>
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-info"
-                            onClick={() => {
-                              viewContent(newsHeader.id);
-                            }}
-                          >
-                            <i className="fa fa-info-circle"></i>
-                          </button>
-                        </td>
-                        <td>
-                          {newsHeader.isFinished ? (
-                            
-                              <i className="fa fa-check"></i>
-                            
-                          ) : (
-                            <button
-                              className="btn btn-success"
-                              onClick={() =>
-                                finishedNews(
-                                  newsHeader.id,
-                                  newsHeader.newsTitle,
-                                  newsHeader.newsDesc,
-                                  newsHeader.newsDate,
-                                  newsHeader.newsUser
-                                )
-                              }
-                            >
-                              <i className="fa fa-check"></i>
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <Toaster position="top-right" reverseOrder={true} />
-    </div>
+    <Container fixed>
+      <Box sx={{ width: "100%" }}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          {newsHeader &&
+            newsHeader.map((newsHeader) => {
+              return (
+                <Grid item xs={3}>
+                  <Card sx={{ width: 300, height: 320 }} variant="outlined">
+                    <CardContent>
+                      <Typography
+                        sx={{ fontSize: 14 }}
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        {dateFormat(newsHeader.newsDate, "dd/mm/yyyy HH:MM")}
+                      </Typography>
+                      <Typography variant="h5" component="div">
+                        {newsHeader.newsTitle}
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        {newsHeader.newsDesc}
+                      </Typography>
+                      <Typography variant="body2">
+                        {newsHeader.newsUser}
+                        <br />
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Learn More</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+        </Grid>
+      </Box>
+    </Container>
   );
 }
 

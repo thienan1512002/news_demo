@@ -43,15 +43,15 @@ namespace Demo_news.Controllers
 
         // PUT: api/NewsHeaders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNewsHeader(int id, NewsHeader newsHeader)
+        [HttpPut("finished/{id}")]
+        public async Task<IActionResult> PutNewsHeader(int id)
         {
-            
+            var newsHeader = await _context.NewsHeaders.FindAsync(id);
             if (id != newsHeader.Id)
             {
                 return BadRequest();
-            }
-            
+            }           
+            newsHeader.IsFinished = true;
             newsHeader.NewsDate = DateTime.Now;
             _context.Entry(newsHeader).State = EntityState.Modified;
 
@@ -71,7 +71,37 @@ namespace Demo_news.Controllers
                 }
             }
 
-            return Ok   (newsHeader);
+            return Ok(newsHeader);
+        }
+        [HttpPut("approved/{id}")]
+        public async Task<IActionResult> Approved(int id)
+        {
+            var newsHeader = await _context.NewsHeaders.FindAsync(id);
+            if (id != newsHeader.Id)
+            {
+                return BadRequest();
+            }
+            newsHeader.Approved = true;       
+            newsHeader.NewsDate = DateTime.Now;
+            _context.Entry(newsHeader).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!NewsHeaderExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(newsHeader);
         }
 
         // POST: api/NewsHeaders

@@ -79,6 +79,7 @@ namespace Demo_news.Controllers
         public async Task<ActionResult<NewsContent>> PostNewsContent(NewsContent newsContent)
         {
             newsContent.ContentDate = DateTime.Now;
+            newsContent.Sequence = _context.NewsContents.Count(m => m.NewsId == newsContent.NewsId);
             _context.NewsContents.Add(newsContent);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetNewsContent", new { id = newsContent.ContentId }, newsContent);

@@ -24,12 +24,10 @@ function CreateNewsContent() {
       newsId: id,
       contentType: "txt",
       contentUser: "An",
-      sequence: e.target.sequence.value,
     }).then((result) => {
       if (result.status === 201) {
         toast.success("Add new Text Content Success");
-        e.target.textContent.value = "";
-        e.target.sequence.value = "";
+        e.target.textContent.value = ""; 
       } else {
         toast.error("Something error !");
       }
@@ -49,11 +47,9 @@ function CreateNewsContent() {
       today.getYear() + "-" + today.getMonth() + "-" + today.getDate()
     );
     formData.append("contentUser", "An");
-    formData.append("sequence", e.target.imgSequence.value);
     createData("newscontents", formData).then((res) => {
       if (res.status === 200) {
         toast.success("Add new Image Content Success");
-        e.target.imgSequence.value = "";
         ref.current.value = "";
       }
     });
@@ -79,12 +75,6 @@ function CreateNewsContent() {
             </div>
             <div className="row">
               <div className="form-group">
-                <label>Sequence</label>
-                <input type="text" className="form-control" name="sequence" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="form-group">
                 <br></br>
                 <input className="btn btn-success" type="submit" />
               </div>
@@ -102,17 +92,6 @@ function CreateNewsContent() {
                   className="form-control-file"
                   name="file"
                   ref={ref}
-                />
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="form-group">
-                <label>Sequence</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="imgSequence"
                 />
               </div>
             </div>
