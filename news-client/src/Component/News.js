@@ -101,7 +101,7 @@ function News() {
         </div>
         <div className="col-6">
           <h4>News not Approval</h4>
-          <table className="table table-hover">
+          <table className="table table-hover table-bordered">
             <thead>
               <tr>
                 <th>News Title</th>
