@@ -28,7 +28,7 @@ function NewsHasApproved() {
         <tbody>
           {news &&
             news
-              .sort((a, b) => a.id - b.id)
+              .sort((a, b) => b.id-a.id)
               .filter((news) => news.approved === true)
               .map((news) => {
                 return (
