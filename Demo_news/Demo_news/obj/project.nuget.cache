@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/faLWD6qeoU9fHrMUxlZ9KCv8mK138KMVpeiMeiWnWh+T+SYdZ3BJhO+lIIn4aa8+rk1KUO7dwH86p+1f+ZzHQ==",
+  "dgSpecHash": "dGn448A9xpAY/y5uHOzn1bkjxYjVoFBqfWRyD1p4TOrYi9LDqoRmHUQfYBvAtYqknuyoew/MAtIp+wJ1fJt5mA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\nhta1\\OneDrive\\Documents\\GitHub\\news_demo\\Demo_news\\Demo_news\\Demo_news.csproj",
+  "projectFilePath": "C:\\Users\\nhta1\\OneDrive\\Documents\\news_demo\\Demo_news\\Demo_news\\Demo_news.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nhta1\\.nuget\\packages\\firebase.auth\\1.0.0\\firebase.auth.1.0.0.nupkg.sha512",
     "C:\\Users\\nhta1\\.nuget\\packages\\firebasestorage.net\\1.0.3\\firebasestorage.net.1.0.3.nupkg.sha512",

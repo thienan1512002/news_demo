@@ -9138,11 +9138,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nhta1\\OneDrive\\Documents\\GitHub\\news_demo\\Demo_news\\Demo_news\\Demo_news.csproj",
+      "projectUniqueName": "C:\\Users\\nhta1\\OneDrive\\Documents\\news_demo\\Demo_news\\Demo_news\\Demo_news.csproj",
       "projectName": "Demo_news",
-      "projectPath": "C:\\Users\\nhta1\\OneDrive\\Documents\\GitHub\\news_demo\\Demo_news\\Demo_news\\Demo_news.csproj",
+      "projectPath": "C:\\Users\\nhta1\\OneDrive\\Documents\\news_demo\\Demo_news\\Demo_news\\Demo_news.csproj",
       "packagesPath": "C:\\Users\\nhta1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nhta1\\OneDrive\\Documents\\GitHub\\news_demo\\Demo_news\\Demo_news\\obj\\",
+      "outputPath": "C:\\Users\\nhta1\\OneDrive\\Documents\\news_demo\\Demo_news\\Demo_news\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
