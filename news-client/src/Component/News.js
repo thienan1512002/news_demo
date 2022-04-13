@@ -16,12 +16,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CardActions from "@mui/material/CardActions";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
   const [disable, setDisable] = useState(false);
   const [txtTitle, setTxtTitle] = useState(null);
   const [txtDesc, setTxtDesc] = useState(null);
   const [open, setOpen] = useState(false);
+  const [show , setShow] = useState(false);
   const redirect = useHistory();
   useEffect(() => {
     loadData("newsheaders").then((data) => {
@@ -79,27 +85,35 @@ function News() {
   };
   const handleChangeTitle = (e) => {
     setTxtTitle(e.target.value);
+    setShow(true);
   };
   const handleChangeDesc = (e) => {
     setTxtDesc(e.target.value);
+    setShow(true);
   };
 
   return (
     <div className="container">
-      <br />
-      <div className="row">
-        <div className="col-4">
-          <Button variant="contained" xs={3} onClick={openModal}>
-            Add News
-          </Button>
-        </div>
-      </div>
-      <div class="row">
+      <Grid container>
+        <Grid item xs={12} md={6} lg={4}>
+          <Fab
+            xs={3}
+            onClick={openModal}
+            style={{ transform: 'translate("-10px")' }}
+            color="primary"
+          >
+            <AddIcon />
+          </Fab>
+        </Grid>
+      </Grid>
+      <Grid container>
         {newsHeader &&
-          newsHeader.sort((a,b)=>b.id-a.id).filter(a=>a.approved===false).map((newsHeader) => {
-            return (
-              <div className="col-md-4 col-sm-12">
-                <Grid item xs={6}>
+          newsHeader
+            .sort((a, b) => b.id - a.id)
+            .filter((a) => a.approved === false)
+            .map((newsHeader) => {
+              return (
+                <Grid item xs={12} md={6} lg={4}>
                   <Card
                     sx={{
                       width: 400,
@@ -110,12 +124,10 @@ function News() {
                       justifyContent: "space-between",
                       flexDirection: "column",
                       cursor: "pointer",
-                      transition:
-                        "background 0.25s, color 0.25s ",
+                      transition: "background 0.25s, color 0.25s ",
                       "&:hover": {
                         backgroundColor: "#7f8c8d",
                         color: "#4bcffa",
-                        
                       },
                     }}
                     variant="outlined"
@@ -170,50 +182,66 @@ function News() {
                     </CardActions>
                   </Card>
                 </Grid>
-              </div>
-            );
-          })}
-      </div>
+              );
+            })}
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add News</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Enter your News Title and News Description here
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="News title"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={txtTitle}
-            onChange={handleChangeTitle}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="News description"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={txtDesc}
-            onChange={handleChangeDesc}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} variant="contained" color="error">
-            Cancel
-          </Button>
-          <Button onClick={addNewsHeader} variant="contained" color="success">
-            Subscribe
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Toaster position="top-right" reverseOrder={true} />
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>
+            <Box display="flex" alignItems="center">
+              <Box flexGrow={1}>Add News</Box>
+              <Box>
+                <Fab size="small" onClick={handleClose} color="error">
+                  <CloseIcon fontSize="small" color="#ffffff" />
+                </Fab>
+              </Box>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter your News Title and News Description here
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="News title"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={txtTitle}
+              onChange={handleChangeTitle}
+              variant="outlined"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="News description"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={txtDesc}
+              onChange={handleChangeDesc}
+              variant="outlined"
+            />
+          </DialogContent>
+          <DialogActions>
+            {show ? <Fab
+              variant="extended"
+              size="medium"
+              color="success"
+              aria-label="add"
+              onClick={addNewsHeader}
+              
+            >
+              <AddIcon />
+              Add News
+            </Fab> : ""}
+            
+          </DialogActions>
+        </Dialog>
+        <Toaster position="top-right" reverseOrder={true} />
+      </Grid>
     </div>
   );
 }

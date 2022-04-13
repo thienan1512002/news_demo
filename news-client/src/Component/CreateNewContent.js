@@ -84,8 +84,6 @@ function CreateNewsContent() {
     content = (
       <label htmlFor="contained-button-file">
         <form onSubmit={handleImageContent}>
-         
-
           <DropzoneDialog
             acceptedFiles={["image/*"]}
             cancelButtonText={"cancel"}
@@ -101,13 +99,9 @@ function CreateNewsContent() {
             showPreviews={true}
             showFileNamesInPreview={true}
           />
-          <br/>
-          <br/>
-          <Button
-            variant="contained"
-            color="success"
-            type="submit"
-          >
+          <br />
+          <br />
+          <Button variant="contained" color="success" type="submit">
             Submit
           </Button>
         </form>
