@@ -11,12 +11,15 @@ import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { DropzoneDialog } from "material-ui-dropzone";
 
 function CreateNewsContent() {
   const { id } = useParams();
+  const [open,setOpen]= useState(true);
   const [contentType, setContentType] = useState(null);
   const [disable, setDisable] = useState(false);
   const [txtContent, setTxtContent] = useState(null);
+  const [file , setFile] = useState(null);
   const ref = useRef();
   const handleTextContent = (e) => {
     e.preventDefault();
@@ -40,8 +43,8 @@ function CreateNewsContent() {
     const today = new Date();
     e.preventDefault();
     let formData = new FormData();
-    formData.append("imageFile", e.target[0].files[0]);
-    formData.append("content", e.target[0].files[0].name);
+    formData.append("imageFile", file);
+    formData.append("content", file.name);
     formData.append("newsId", id);
     formData.append("contentType", contentType);
     formData.append(
@@ -81,12 +84,31 @@ function CreateNewsContent() {
     content = (
       <label htmlFor="contained-button-file">
         <form onSubmit={handleImageContent}>
-          <Input id="contained-button-file" type="file" name="file" ref={ref} />
+         
+
+          <DropzoneDialog
+            acceptedFiles={["image/*"]}
+            cancelButtonText={"cancel"}
+            submitButtonText={"submit"}
+            maxFileSize={5000000}
+            open={open}
+            onClose={() => setOpen(false)}
+            onSave={(files) => {
+              console.log("Files:", files[0]);
+              setFile(files[0]);
+              setOpen(false);
+            }}
+            showPreviews={true}
+            showFileNamesInPreview={true}
+          />
+          <br/>
+          <br/>
           <Button
             variant="contained"
+            color="success"
             type="submit"
           >
-            Upload
+            Submit
           </Button>
         </form>
       </label>
