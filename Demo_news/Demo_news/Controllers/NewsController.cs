@@ -23,8 +23,6 @@ namespace Demo_news.Controllers
         public async Task<IEnumerable<NewsHeader>> GetNewsContents()
         {
             var data = from h in _context.NewsHeaders
-                       //join c in _context.NewsContents
-                       //on h.Id equals c.NewsId
                        select new NewsHeader
                        {
                            Id = h.Id,

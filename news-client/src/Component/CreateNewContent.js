@@ -1,33 +1,35 @@
 import { React, useRef, useState, useEffect } from "react";
-import { createData, loadData , updateData } from "../services/Data";
+import { createData, loadData, updateData } from "../services/Data";
 import { useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-
-const initalState = {
-  id : null,
-  newsTitle : '',
-  newsDesc : '',
-  newsDate : '',
-  newsUser : '',
-  approved : false,
-  isFinished : false
-}
+import Container from "@mui/material/Container";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Box from "@mui/material/Box";
+import Input from "@mui/material/Input";
+import Button from "@mui/material/Button";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 
 function CreateNewsContent() {
-  const [header, setHeader] = useState(initalState);
   const { id } = useParams();
+  const [contentType, setContentType] = useState(null);
+  const [disable, setDisable] = useState(false);
+  const [txtContent, setTxtContent] = useState(null);
   const ref = useRef();
   const handleTextContent = (e) => {
     e.preventDefault();
     createData("texts", {
-      content: e.target.textContent.value,
+      content: txtContent,
       newsId: id,
-      contentType: "txt",
+      contentType: contentType,
       contentUser: "An",
     }).then((result) => {
       if (result.status === 201) {
         toast.success("Add new Text Content Success");
-        e.target.textContent.value = ""; 
+        setDisable(false);
+        setTxtContent("");
       } else {
         toast.error("Something error !");
       }
@@ -41,7 +43,7 @@ function CreateNewsContent() {
     formData.append("imageFile", e.target[0].files[0]);
     formData.append("content", e.target[0].files[0].name);
     formData.append("newsId", id);
-    formData.append("contentType", "img");
+    formData.append("contentType", contentType);
     formData.append(
       "contentDate",
       today.getYear() + "-" + today.getMonth() + "-" + today.getDate()
@@ -51,61 +53,71 @@ function CreateNewsContent() {
       if (res.status === 200) {
         toast.success("Add new Image Content Success");
         ref.current.value = "";
+        setDisable(false);
       }
     });
   };
-    
- 
-  
+  let content;
+  if (contentType === "txt") {
+    content = (
+      <Box minWidth={120}>
+        <InputLabel id="demo-simple-select-label">News Content</InputLabel>
+        <TextareaAutosize
+          fullWidth
+          labelId="demo-simple-select-label"
+          aria-label="minimum height"
+          minRows={10}
+          value={txtContent}
+          style={{ width: 500 }}
+          onChange={(e) => setTxtContent(e.target.value)}
+        />
+        <Button variant="contained" color="success" onClick={handleTextContent}>
+          Add Content
+        </Button>
+      </Box>
+    );
+  }
+  if (contentType === "img") {
+    content = (
+      <label htmlFor="contained-button-file">
+        <form onSubmit={handleImageContent}>
+          <Input id="contained-button-file" type="file" name="file" ref={ref} />
+          <Button
+            variant="contained"
+            type="submit"
+          >
+            Upload
+          </Button>
+        </form>
+      </label>
+    );
+  }
+  const handleChange = (e) => {
+    setContentType(e.target.value);
+    setDisable(true);
+  };
+  console.log(contentType);
   return (
-    <div className="container">
-      <h3 align="center">Create News</h3>     
-      <div className="row">
-        <div className="col-6">
-          <form onSubmit={handleTextContent}>
-            <div className="row">
-              <div className="form-group">
-                <label>Content</label>
-                <textarea
-                  className="form-control"
-                  name="textContent"
-                  rows="15"
-                ></textarea>
-              </div>
-            </div>
-            <div className="row">
-              <div className="form-group">
-                <br></br>
-                <input className="btn btn-success" type="submit" />
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="col-6">
-          <form onSubmit={handleImageContent} encType="multipart/form-data">
-            <div className="row">
-              <div className="form-group">
-                <label>Images</label>
-                <br></br>
-                <input
-                  type="file"
-                  className="form-control-file"
-                  name="file"
-                  ref={ref}
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="form-group">
-                <br></br>
-                <input className="btn btn-success" type="submit" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+    <Container fixed>
+      <Box sx={{ maxWidth: 120 }}>
+        <FormControl fullWidth disabled={disable}>
+          <InputLabel id="demo-simple-select-label">Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={contentType}
+            label="Content Type"
+            onChange={handleChange}
+          >
+            <MenuItem value={"txt"}>Text Content</MenuItem>
+            <MenuItem value={"img"}>Image Content</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+      <br></br>
+      <Box sx={{ maxWidth: 300 }}>{content}</Box>
       <Toaster position="top-right" reverseOrder={true} />
-    </div>
+    </Container>
   );
 }
 

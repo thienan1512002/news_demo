@@ -3,9 +3,7 @@ import { loadData, createData, updateData } from "../services/Data";
 import { useHistory } from "react-router-dom";
 import dateFormat from "dateformat";
 import toast, { Toaster } from "react-hot-toast";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -17,12 +15,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import CardActions from "@mui/material/CardActions";
 function News() {
   const [newsHeader, setNewHeaders] = useState(null);
   const [disable, setDisable] = useState(false);
-  const [txtTitle,setTxtTitle] = useState(null);
-  const [txtDesc,setTxtDesc] = useState(null);
-  const [open,setOpen] = useState(false);
+  const [txtTitle, setTxtTitle] = useState(null);
+  const [txtDesc, setTxtDesc] = useState(null);
+  const [open, setOpen] = useState(false);
   const redirect = useHistory();
   useEffect(() => {
     loadData("newsheaders").then((data) => {
@@ -36,17 +35,16 @@ function News() {
       newsTitle: txtTitle,
       newsDesc: txtDesc,
       newsUser: "admin",
-    })
-      .then((result) => {
-        console.log(result);
-        if (result.status === 201) {
-          setOpen(false);
-          toast.success("Add new News Header Success");
-           redirect.push("/create-news-content/" + (newsHeader.length + 1));
-        } else {
-          toast.error("Something error !");
-        }
-      });   
+    }).then((result) => {
+      console.log(result);
+      if (result.status === 201) {
+        setOpen(false);
+        toast.success("Add new News Header Success");
+        redirect.push("/create-news-content/" + (newsHeader.length + 1));
+      } else {
+        toast.error("Something error !");
+      }
+    });
   };
   const approveNews = (id) => {
     updateData("newsheaders/approved/", id, {
@@ -75,34 +73,61 @@ function News() {
   };
   const openModal = () => {
     setOpen(true);
-  }
+  };
   const handleClose = () => {
     setOpen(false);
-  }
+  };
   const handleChangeTitle = (e) => {
     setTxtTitle(e.target.value);
-  }
+  };
   const handleChangeDesc = (e) => {
     setTxtDesc(e.target.value);
-  }
+  };
 
   return (
-    <Container fixed>
-      <Box sx={{ width: "100%" }}>
-        <Button variant="contained" xs={3} onClick={openModal}>
-          Add News
-        </Button>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: -1, sm: -2, md: -3 }}>
-          {newsHeader &&
-            newsHeader.map((newsHeader) => {
-              return (
+    <div className="container">
+      <br />
+      <div className="row">
+        <div className="col-4">
+          <Button variant="contained" xs={3} onClick={openModal}>
+            Add News
+          </Button>
+        </div>
+      </div>
+      <div class="row">
+        {newsHeader &&
+          newsHeader.sort((a,b)=>b.id-a.id).filter(a=>a.approved===false).map((newsHeader) => {
+            return (
+              <div className="col-md-4 col-sm-12">
                 <Grid item xs={6}>
-                  <Card sx={{ width: 500, height: 200 }} variant="outlined">
+                  <Card
+                    sx={{
+                      width: 400,
+                      height: 375,
+                      padding: "10px",
+                      margin: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "column",
+                      cursor: "pointer",
+                      transition:
+                        "background 0.25s, color 0.25s ",
+                      "&:hover": {
+                        backgroundColor: "#7f8c8d",
+                        color: "#4bcffa",
+                        
+                      },
+                    }}
+                    variant="outlined"
+                    onClick={() => {
+                      viewContent(newsHeader.id);
+                    }}
+                  >
                     <CardContent>
                       <Typography variant="h5" component="div">
                         {newsHeader.newsTitle}
                       </Typography>
-                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                      <Typography sx={{ mb: 1.5 }}>
                         {newsHeader.newsDesc}
                       </Typography>
                       <Typography variant="body2">
@@ -113,19 +138,48 @@ function News() {
                         {dateFormat(newsHeader.newsDate, "dd/mm/yyyy HH:MM")}
                         <br />
                       </Typography>
-                    </CardContent>                   
+                    </CardContent>
+                    <CardActions style={{ justifyContent: "center" }}>
+                      {newsHeader.isFinished === false ? (
+                        <Button
+                          size="medium"
+                          variant="contained"
+                          color="success"
+                          onClick={() => finishedNews(newsHeader.id)}
+                        >
+                          Finished
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+
+                      <Button
+                        size="medium"
+                        variant="contained"
+                        color="success"
+                        disabled={!newsHeader.isFinished}
+                        onClick={() => {
+                          approveNews(newsHeader.id);
+                        }}
+                      >
+                        Approve
+                      </Button>
+                      <Button size="medium" variant="contained" color="info">
+                        Update
+                      </Button>
+                    </CardActions>
                   </Card>
                 </Grid>
-              );
-            })}
-        </Grid>
-      </Box>
+              </div>
+            );
+          })}
+      </div>
+
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add News</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            Enter your News Title and News Description here
           </DialogContentText>
           <TextField
             autoFocus
@@ -151,12 +205,16 @@ function News() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={addNewsHeader}>Subscribe</Button>
+          <Button onClick={handleClose} variant="contained" color="error">
+            Cancel
+          </Button>
+          <Button onClick={addNewsHeader} variant="contained" color="success">
+            Subscribe
+          </Button>
         </DialogActions>
       </Dialog>
       <Toaster position="top-right" reverseOrder={true} />
-    </Container>
+    </div>
   );
 }
 
