@@ -17,49 +17,70 @@ function NewsHasApproved() {
     loadData("news").then((data) => {
       setNews(data.data);
     });
-    
   });
   const seeDetails = (id) => {
     redirect.push("/news-details/" + id);
-  }
+  };
   return (
     <div className="container">
-      <table className="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Desc</th>
-            <th>Author</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {news &&
-            news
-              .sort((a, b) => b.id-a.id)
-              .filter((news) => news.approved === true)
-              .map((news) => {
-                return (
-                  <tr
-                    onClick={() => {
-                      seeDetails(news.id);
+      <Grid container>
+        <Grid item md={4}></Grid>
+        <Grid item md={4}>
+          <h4 align="center">News Lists</h4>
+        </Grid>
+        <Grid item md={4}></Grid>
+      </Grid>
+      <Grid container>
+        {news &&
+          news
+            .sort((a, b) => b.id - a.id)
+            .filter((a) => a.approved === true)
+            .map((newsHeader) => {
+              return (
+                <Grid item xs={12} md={6} lg={4}>
+                  <Card
+                    sx={{
+                      width: 400,
+                      height: 375,
+                      padding: "10px",
+                      margin: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: "column",
                     }}
-                    style={{ cursor: "pointer" }}
+                    variant="outlined"
                   >
-                    <td>{news.newsTitle}</td>
-                    <td>{news.newsDesc}</td>
-                    <td>{news.newsUser}</td>
-                    <td>
-                      {dateFormat(
-                        news.newsDate,
-                        "dddd, mmmm dS, yyyy, h:MM:ss TT"
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-        </tbody>
-      </table>
+                    <CardContent>
+                      <Typography variant="h5" component="div">
+                        {newsHeader.newsTitle}
+                      </Typography>
+                      <Typography sx={{ mb: 1.5 }}>
+                        {newsHeader.newsDesc}
+                      </Typography>
+                      <Typography variant="body2">
+                        Author : {newsHeader.newsUser}
+                        <br />
+                      </Typography>
+                      <Typography variant="body2">
+                        {dateFormat(newsHeader.newsDate, "dd/mm/yyyy HH:MM")}
+                        <br />
+                      </Typography>
+                    </CardContent>
+                    <CardActions style={{ justifyContent: "center" }}>
+                      <Button
+                        size="medium"
+                        variant="contained"
+                        color="info"
+                        onClick={() => seeDetails(newsHeader.id)}
+                      >
+                        Details
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+      </Grid>
     </div>
   );
 }

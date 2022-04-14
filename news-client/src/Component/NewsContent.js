@@ -39,7 +39,7 @@ function Content() {
                           display: "block",
                           marginLeft:"auto",
                           marginRight:"auto",
-                          width: "auto%",
+                          width: "auto",
                           height: "auto"
                         }}
                       />

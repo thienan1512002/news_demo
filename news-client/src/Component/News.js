@@ -77,6 +77,9 @@ function News() {
   const viewContent = (id) => {
     redirect.push("/news-details/" + id);
   };
+  const updateSequence = (id) => {
+    redirect.push("/update-sequence/" + id);
+  }
   const openModal = () => {
     setOpen(true);
   };
@@ -123,17 +126,8 @@ function News() {
                       display: "flex",
                       justifyContent: "space-between",
                       flexDirection: "column",
-                      cursor: "pointer",
-                      transition: "background 0.25s, color 0.25s ",
-                      "&:hover": {
-                        backgroundColor: "#7f8c8d",
-                        color: "#4bcffa",
-                      },
                     }}
                     variant="outlined"
-                    onClick={() => {
-                      viewContent(newsHeader.id);
-                    }}
                   >
                     <CardContent>
                       <Typography variant="h5" component="div">
@@ -176,8 +170,25 @@ function News() {
                       >
                         Approve
                       </Button>
-                      <Button size="medium" variant="contained" color="info">
+                      <Button
+                        size="medium"
+                        variant="contained"
+                        color="info"
+                        onClick={() => {
+                          updateSequence(newsHeader.id);
+                        }}
+                      >
                         Update
+                      </Button>
+                      <Button
+                        size="medium"
+                        variant="contained"
+                        color="info"
+                        onClick={() => {
+                          viewContent(newsHeader.id);
+                        }}
+                      >
+                        Details
                       </Button>
                     </CardActions>
                   </Card>
@@ -207,7 +218,6 @@ function News() {
               label="News title"
               type="text"
               fullWidth
-              variant="standard"
               value={txtTitle}
               onChange={handleChangeTitle}
               variant="outlined"
@@ -219,7 +229,6 @@ function News() {
               label="News description"
               type="text"
               fullWidth
-              variant="standard"
               value={txtDesc}
               onChange={handleChangeDesc}
               variant="outlined"

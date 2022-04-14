@@ -3,9 +3,12 @@ import News from './Component/News';
 import NewsContent from './Component/NewsContent';
 import CreateNewsContent from './Component/CreateNewContent';
 import NewsHasApproved from './Component/NewsHasApproved';
+import UpdateSequence from './Component/UpdateSequence';
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
  function App() {
   return (
+    
     <Router>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="container">
@@ -48,7 +51,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
         />
 
         <Route path="/news-details/:id" children={<NewsContent />} />
-
+        <Route path="/update-sequence/:id" children={<UpdateSequence />} />
         <Route path="/create-news-header">
           <News />
         </Route>

@@ -1,25 +1,24 @@
 import { React, useRef, useState, useEffect } from "react";
-import { createData, loadData, updateData } from "../services/Data";
+import { createData} from "../services/Data";
 import { useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import Container from "@mui/material/Container";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import TextField from "@mui/material/TextField";
 import { DropzoneDialog } from "material-ui-dropzone";
-
+import Grid from "@mui/material/Grid";
 function CreateNewsContent() {
   const { id } = useParams();
-  const [open,setOpen]= useState(true);
+  const [open, setOpen] = useState(true);
   const [contentType, setContentType] = useState(null);
   const [disable, setDisable] = useState(false);
   const [txtContent, setTxtContent] = useState(null);
-  const [file , setFile] = useState(null);
+  const [file, setFile] = useState(null);
   const ref = useRef();
   const handleTextContent = (e) => {
     e.preventDefault();
@@ -55,8 +54,8 @@ function CreateNewsContent() {
     createData("newscontents", formData).then((res) => {
       if (res.status === 200) {
         toast.success("Add new Image Content Success");
-        ref.current.value = "";
         setDisable(false);
+        setFile(null);
       }
     });
   };
@@ -64,14 +63,15 @@ function CreateNewsContent() {
   if (contentType === "txt") {
     content = (
       <Box minWidth={120}>
-        <InputLabel id="demo-simple-select-label">News Content</InputLabel>
-        <TextareaAutosize
+        
+        <TextField
           fullWidth
           labelId="demo-simple-select-label"
-          aria-label="minimum height"
+          label="Text Content"
+          variant="outlined"
           minRows={10}
           value={txtContent}
-          style={{ width: 500 }}
+          style={{ width: 500 ,marginBottom:"10px"}}
           onChange={(e) => setTxtContent(e.target.value)}
         />
         <Button variant="contained" color="success" onClick={handleTextContent}>
@@ -90,7 +90,7 @@ function CreateNewsContent() {
             submitButtonText={"submit"}
             maxFileSize={5000000}
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={() => {setOpen(false);setContentType(null);setDisable(false);}}
             onSave={(files) => {
               console.log("Files:", files[0]);
               setFile(files[0]);
@@ -111,29 +111,41 @@ function CreateNewsContent() {
   const handleChange = (e) => {
     setContentType(e.target.value);
     setDisable(true);
+    setOpen(true);
   };
-  console.log(contentType);
   return (
-    <Container fixed>
-      <Box sx={{ maxWidth: 120 }}>
-        <FormControl fullWidth disabled={disable}>
-          <InputLabel id="demo-simple-select-label">Type</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={contentType}
-            label="Content Type"
-            onChange={handleChange}
-          >
-            <MenuItem value={"txt"}>Text Content</MenuItem>
-            <MenuItem value={"img"}>Image Content</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+    <div className="container">
+      <Grid container>
+        <Grid item xs={12} md={6} lg={4}></Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <FormControl fullWidth disabled={disable}>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={contentType}
+              label="Content Type"
+              onChange={handleChange}
+              fullWidth
+              disabled={disable}
+            >
+              <MenuItem value={"txt"}>Text Content</MenuItem>
+              <MenuItem value={"img"}>Image Content</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}></Grid>
+      </Grid>
       <br></br>
-      <Box sx={{ maxWidth: 300 }}>{content}</Box>
+      <Grid container>
+        <Grid item xs={12} md={6} lg={4}></Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          {content}
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}></Grid>
+      </Grid>
       <Toaster position="top-right" reverseOrder={true} />
-    </Container>
+    </div>
   );
 }
 
